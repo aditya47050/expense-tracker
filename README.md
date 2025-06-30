@@ -144,7 +144,10 @@ In production, cron runs every 14 mins to ping `/api/health` and prevent cold st
 
 ## 📸 Screenshots
 
-Include app UI screenshots here (if needed later).
+<img src="screenshots/splash-screen.jpeg" width="200" height="400"/>  <img src="screenshots/signIn.jpeg" width="200" height="400"/>  <img src="screenshots/signUp.jpeg" width="200" height="400"/> 
+<img src="screenshots/transaction1.jpeg" width="200" height="400"/> <img src="screenshots/transaction2.jpeg" width="200" height="400"/> <img src="screenshots/create1.jpeg" width="200" height="400"/> 
+<img src="screenshots/create2.jpeg" width="200" height="400"/> <img src="screenshots/alert.jpeg" width="200" height="400"/><img src="screenshots/refresh.jpeg" width="200" height="400"/> 
+<img src="screenshots/last.jpeg" width="200" height="400"/>
 
 ---
 
