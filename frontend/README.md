@@ -1,50 +1,157 @@
-# Welcome to your Expo app 👋
+## 📟 BudgetBuddy - Personal Finance Tracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**BudgetBuddy** is a full-stack personal finance tracker built with:
 
-## Get started
+* **React Native (Expo)** for the mobile frontend
+* **Clerk** for authentication
+* **Node.js + Express** for the backend
+* **PostgreSQL (via Neon)** as the database
+* **Upstash Redis** for rate limiting
+* Optional **cron job** to prevent server cold starts on free hosting
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+### 📲 Features
 
-2. Start the app
+* 🔐 Secure authentication using Clerk
+* ➕ Add income/expense transactions
+* 📊 View summary: balance, income, expenses
+* 📃️ View and delete past transactions
+* 🔄 Pull-to-refresh and offline-friendly UI
+* 🌐 Rate limiting via Upstash Redis
+* ☁️ Cloud-ready: supports serverless PostgreSQL and cron ping
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## ✨ Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Frontend (Expo)     | Backend (Express)              | Infra                 |
+| ------------------- | ------------------------------ | --------------------- |
+| React Native (Expo) | Express.js                     | Neon PostgreSQL       |
+| Clerk Auth          | PostgreSQL (via `postgres.js`) | Upstash Redis         |
+| Zustand             | REST APIs                      | CRON (for cold start) |
+| Expo Router         | Rate Limiter                   |                       |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🛠️ Getting Started
 
-When you're ready, run:
+### ⚙️ Backend Setup
+
+#### 1. Clone and Install
 
 ```bash
-npm run reset-project
+git clone https://github.com/yourusername/budgetbuddy-backend.git
+cd budgetbuddy-backend
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+#### 2. Environment Variables
 
-## Learn more
+Create a `.env` file in the root and add:
 
-To learn more about developing your project with Expo, look at the following resources:
+```env
+PORT=2000
+DATABASE_URL=your_neon_postgres_url
+API_URL=https://your-app-domain.com/api/health
+UPSTASH_REDIS_REST_URL=your_upstash_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_token
+NODE_ENV=development
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+#### 3. Run Locally
 
-## Join the community
+```bash
+node index.js
+```
 
-Join our community of developers creating universal apps.
+Neon/Postgres table will auto-create if not present.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+### 📱 Frontend Setup
+
+Clone and setup the React Native frontend (already done):
+
+```bash
+cd budgetbuddy-frontend
+npm install
+```
+
+Add this to your `app.config.js` or `app.json`:
+
+```json
+"extra": {
+  "expoPublicClerkPublishableKey": "your_clerk_publishable_key"
+}
+```
+
+#### Run on Emulator / Device
+
+```bash
+npx expo start
+```
+
+---
+
+## 📡️ API Endpoints
+
+All endpoints prefixed with `/api/transactions`
+
+| Method | Endpoint                            | Description                   |
+| ------ | ----------------------------------- | ----------------------------- |
+| GET    | `/api/health`                       | Health check                  |
+| POST   | `/api/transactions/`                | Add a new transaction         |
+| GET    | `/api/transactions/:userId`         | Get all transactions for user |
+| DELETE | `/api/transactions/:id`             | Delete a transaction          |
+| GET    | `/api/transactions/summary/:userId` | Get balance, income, expenses |
+
+---
+
+## 🧶 Rate Limiting
+
+Using Upstash Redis:
+
+* 100 requests per minute
+* Defined in `middleware/rateLimiter.js`
+
+---
+
+## 🔀 CRON (Optional, for Render/Free Hosting)
+
+In production, cron runs every 14 mins to ping `/api/health` and prevent cold starts:
+
+```js
+"*/14 * * * *"
+```
+
+---
+
+## 🔐 Security Notes
+
+* ✅ Clerk **publishableKey** is public-safe
+* ❌ Never expose Clerk **secret keys**, DB credentials, or JWTs in frontend or public repos
+
+---
+
+## 🛆 Deployment Suggestions
+
+* **Backend**: Deploy on [Render](https://render.com), Railway, or Vercel Serverless
+* **Frontend**: Use `EAS Build` to generate signed APK
+* **Database**: [Neon](https://neon.tech) for serverless PostgreSQL
+
+---
+
+## 📸 Screenshots
+
+Include app UI screenshots here (if needed later).
+
+---
+
+## 🧑‍💻 Author
+
+**Aditya Kiran Mandhare**
+
+📧 [adityamandhare47050@gmail.com](mailto:adityamandhare47050@gmail.com)
+
+🔗 [GitHub](https://github.com/aditya47050) | [LinkedIn](https://www.linkedin.com/in/aditya-mandhare-00217a26b)
